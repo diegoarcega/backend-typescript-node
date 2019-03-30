@@ -5,10 +5,11 @@ import { UsersService } from './users.service'
 
 @Module({
   controllers: [UsersController],
-  components: [UsersService]
+  providers: [UsersService]
 })
+
 export class UsersModule {
-  configure(consumer: MiddlewareConsumer) {
-    consumer.apply(AuthMiddleware).forRoutes(UsersController)
-  }
+  // configure(consumer: MiddlewareConsumer) {
+  //   consumer.apply(AuthMiddleware).forRoutes(UsersController)
+  // }
 }
