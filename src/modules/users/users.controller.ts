@@ -1,9 +1,6 @@
 import { Controller, Response, Get, Post, Put, Delete, Request, Body, Param, HttpStatus } from '@nestjs/common'
 import { UsersService } from './users.service'
-
-function getSomething () {
-  return new Promise((resolve, reject) => setTimeout(() => resolve('im response from promise'), 1000))
-}
+import { UserInterface } from './users.interface';
 
 @Controller('users')
 export class UsersController {
@@ -22,8 +19,20 @@ export class UsersController {
   }
 
   @Post()
-  public async create(@Response() res, @Body('email') email, @Body('password') password) {
-    const result = await this.usersService.create(email, password)
+  public async create(@Response() res, @Body('user') user) {
+    const result = await this.usersService.create(user)
+    res.status(HttpStatus.ACCEPTED).json(result)
+  }
+
+  @Put()
+  public async update(@Response() res, @Body('user') user) {
+    const result = await this.usersService.update(user)
+    res.status(HttpStatus.ACCEPTED).json(result)
+  }
+
+  @Delete(':id')
+  public async delete(@Response() res, @Param('id') id) {
+    const result = await this.usersService.delete(id)
     res.status(HttpStatus.ACCEPTED).json(result)
   }
 }

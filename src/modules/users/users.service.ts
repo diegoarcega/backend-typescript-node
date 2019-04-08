@@ -1,6 +1,7 @@
 import { Injectable, HttpException } from '@nestjs/common'
 import * as uuid from 'uuid'
 import { database } from '../database/sqlite'
+import { UserInterface } from './users.interface';
 
 @Injectable()
 export class UsersService {
@@ -20,12 +21,37 @@ export class UsersService {
     })
   }
 
-  public create(email: string, password: string) {
+  public create(user: UserInterface) {
+    return new Promise((resolve, reject) => {
+      const newId = uuid.v1().replace(/-/g, '')
+      database.run(
+        'INSERT INTO user(id, email, password, role) VALUES(?, ?, ?, ?)',
+        [newId, user.email, user.password, user.role],
+        err => !err ? resolve({ message: 'user has been registered', data: {...user, id: newId } }) : reject(new HttpException(err, 500))
+      )
+    })
+  }
+
+  public update(user: UserInterface) {
     return new Promise((resolve, reject) => {
       database.run(
-        'INSERT INTO user(id, email, password, role) VALUES(?, ?, ?, \'user\')',
-        [uuid.v1().replace(/-/g, ''), email, password],
-        err => !err ? resolve({ message: 'user has been registered'}) : reject(new HttpException(err, 500))
+        `UPDATE user SET email=?, password=?, role=? WHERE(id = ?);`,
+        [user.email, user.password, user.role, user.id],
+        error => !error ?
+          resolve({ 'message': `User ${user.email} has been updated successfully`, data: user }) :
+          reject(new HttpException(error, 500))
+      )
+    })
+  }
+
+  public delete(id: string) {
+    return new Promise((resolve, reject) => {
+      database.run(
+        'DELETE FROM user WHERE id = ?',
+        [id],
+        error => !error ?
+          resolve({ 'message': 'User deleted successfully' }) :
+          reject(new HttpException(error, 500))
       )
     })
   }
