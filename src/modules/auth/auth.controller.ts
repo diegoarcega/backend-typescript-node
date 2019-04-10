@@ -8,7 +8,11 @@ export class AuthController {
 
   @Post('/login')
   public async login(@Response() res, @Body('email') email, @Body('password') password) {
-    const auth = await this.loginService.login(email, password)
-    res.status(HttpStatus.OK).json(auth)
+    try {
+      const response = await this.loginService.login(email, password)
+      res.status(HttpStatus.OK).json(response)
+    } catch (error) {
+      res.status(HttpStatus.NOT_FOUND).json(error)
+    }
   }
 }

@@ -8,31 +8,51 @@ export class UsersController {
 
   @Get()
   public async getAllUsers (@Response() res) {
-    const users = await this.usersService.getAll()
-    res.status(HttpStatus.OK).json(users)
+    try {
+      const users = await this.usersService.getAll()
+      res.status(HttpStatus.OK).json(users)
+    } catch (error) {
+      res.status(HttpStatus.INTERNAL_SERVER_ERROR).json(error)
+    }
   }
 
   @Get('/:id')
   public async getUser(@Response() res, @Param('id') id) {
-    const user = await this.usersService.getUser(id)
-    res.status(HttpStatus.OK).json(user)
+    try {
+      const user = await this.usersService.getUser(id)
+      res.status(HttpStatus.OK).json(user)
+    } catch (error) {
+      res.status(HttpStatus.INTERNAL_SERVER_ERROR).json(error)
+    }
   }
 
   @Post()
   public async create(@Response() res, @Body('user') user) {
-    const result = await this.usersService.create(user)
-    res.status(HttpStatus.ACCEPTED).json(result)
+    try {
+      const result = await this.usersService.create(user)
+      res.status(HttpStatus.ACCEPTED).json(result)
+    } catch (error) {
+      res.status(HttpStatus.INTERNAL_SERVER_ERROR).json(error)
+    }
   }
 
   @Put()
   public async update(@Response() res, @Body('user') user) {
-    const result = await this.usersService.update(user)
-    res.status(HttpStatus.ACCEPTED).json(result)
+    try {
+      const result = await this.usersService.update(user)
+      res.status(HttpStatus.ACCEPTED).json(result)
+    } catch (error) {
+      res.status(HttpStatus.INTERNAL_SERVER_ERROR).json(error)
+    }
   }
 
   @Delete(':id')
   public async delete(@Response() res, @Param('id') id) {
-    const result = await this.usersService.delete(id)
-    res.status(HttpStatus.ACCEPTED).json(result)
+    try {
+      const result = await this.usersService.delete(id)
+      res.status(HttpStatus.ACCEPTED).json(result)
+    } catch (error) {
+      res.status(HttpStatus.INTERNAL_SERVER_ERROR).json(error)
+    }
   }
 }
