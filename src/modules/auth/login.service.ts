@@ -3,17 +3,22 @@ import { AuthHelper } from './auth.helper'
 import { InjectModel } from '@nestjs/mongoose';
 import { UserInterface } from '../users/users.interface';
 import { Model } from 'mongoose'
+import { TokenInterface } from './auth.helper'
+
+interface LoginInterface {
+  login(email: string, password: string): Promise<TokenInterface>
+}
 
 @Injectable()
-export class LoginService {
+export class LoginService implements LoginInterface {
   constructor(
     @InjectModel('users') private readonly usersModel: Model<UserInterface>,
     private authHelper: AuthHelper,
   ) { }
 
-  public async login(email, password) {
+  async login(email, password) {
     if (!email) {
-      throw new HttpException('Email_id is required', 422)
+      throw new HttpException('Email is required', 422)
     }
 
     if (!password) {

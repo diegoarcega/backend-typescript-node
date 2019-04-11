@@ -1,11 +1,15 @@
-This project is intended for practicing:
-* node backend
-* typescript
-* nestjs framework
-* database
+# My Practice backend App
 
-todo
+I am using this repository to practice the following:
 
-* env variables
-* use mongodb
-* use oauth
+- Node backend
+- Typescript
+- Nestjs framework
+- Database with MongoDB
+
+## Todos
+
+- [x] env variables
+- [x] use MongoDB
+- [ ] add tests
+- [ ] use oath service

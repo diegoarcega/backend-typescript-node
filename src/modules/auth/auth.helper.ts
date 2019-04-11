@@ -1,15 +1,23 @@
 import * as jwt from 'jsonwebtoken'
+import { UserInterface } from '../users/users.interface';
 
-export class AuthHelper {
-  generateToken(user) {
+interface AuthInterface {
+  generateToken(user: UserInterface): TokenInterface,
+}
+
+export interface TokenInterface {
+  token: string,
+}
+
+export class AuthHelper implements AuthInterface {
+  generateToken(user: UserInterface): TokenInterface {
     return {
       token: jwt.sign({
         id: user.id,
-        name: user.name,
         email: user.email,
         role: user.role,
         exp: Math.round(new Date().getTime() / 1000) + 604800 // 1 week
-      }, 'mysecret')
+      }, process.env.JWT_SECRET)
     }
   }
 }
