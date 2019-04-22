@@ -1,4 +1,5 @@
 import * as jwt from 'jsonwebtoken'
+import config from '../config'
 import { UserInterface } from '../users/users.interface';
 
 interface AuthInterface {
@@ -17,7 +18,7 @@ export class AuthHelper implements AuthInterface {
         email: user.email,
         role: user.role,
         exp: Math.round(new Date().getTime() / 1000) + 604800 // 1 week
-      }, process.env.JWT_SECRET)
+      }, config.jwtSecret)
     }
   }
 }
